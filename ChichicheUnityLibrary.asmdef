@@ -1,0 +1,21 @@
+{
+    "name": "ChichicheUnityLibrary",
+    "rootNamespace": "Chichiche",
+    "references": [
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:0632cc6b22db61d41898dfef78dc32f5",
+        "GUID:bbde805d927e795439d7a746d1749cab",
+        "GUID:50955661269b67b4fb05cf0009640a6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
