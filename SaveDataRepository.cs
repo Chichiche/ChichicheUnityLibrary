@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 namespace Chichiche
 {
-    public abstract class SaveDataRepository<T> : ILateTickable, IDisposable where T : new()
+    public abstract class SaveDataRepository<T> : Observable<T>, ILateTickable, IDisposable where T : new()
     {
         readonly SaveDataStream<T> _stream;
         readonly T _data;
@@ -17,9 +17,10 @@ namespace Chichiche
             _data = _stream.Load();
         }
 
-        public Observable<T> AsObservable()
+        protected override IDisposable SubscribeCore(Observer<T> observer)
         {
-            return Observable.Return(_data);
+            observer.OnNext(_data);
+            return Disposable.Empty;
         }
 
         public void Update<TValue>(TValue value, Action<T, TValue> update)
@@ -28,14 +29,14 @@ namespace Chichiche
             _isDirty = true;
         }
 
-        public void LateTick()
+        void ILateTickable.LateTick()
         {
             if (! _isDirty) return;
             _isDirty = false;
             _stream.Save();
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             _stream?.Dispose();
         }
