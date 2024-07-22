@@ -6,14 +6,14 @@ namespace Chichiche
 {
     public abstract class SaveDataRepository<T> : ILateTickable, IDisposable where T : new()
     {
-        readonly VariableLengthSaveDataStream<T> _stream;
+        readonly SaveDataStream<T> _stream;
         readonly T _data;
         bool _isDirty;
 
         protected SaveDataRepository()
         {
             var saveDataPath = PathUtil.GetSaveDataFilePath(typeof( T ).Name);
-            _stream = new VariableLengthSaveDataStream<T>(saveDataPath);
+            _stream = new SaveDataStream<T>(saveDataPath);
             _data = _stream.Load();
         }
 
