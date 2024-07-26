@@ -1,10 +1,10 @@
 ﻿using System;
-using R3;
+using BinDI;
 using VContainer.Unity;
 
 namespace Chichiche
 {
-    public abstract class SaveDataRepository<T> : Observable<T>, ILateTickable, IDisposable where T : new()
+    public abstract class SaveDataRepository<T> : ILateTickable, IDisposable where T : new()
     {
         readonly SaveDataStream<T> _stream;
         readonly T _data;
@@ -17,16 +17,18 @@ namespace Chichiche
             _data = _stream.Load();
         }
 
-        protected override IDisposable SubscribeCore(Observer<T> observer)
+        public void LoadTo(Action<T> publish)
         {
-            observer.OnNext(_data);
-            return Disposable.Empty;
+            publish(_data);
         }
 
-        public void Update<TValue>(TValue value, Action<T, TValue> update)
+        public void SaveFrom<TValue>(ISubscribable<TValue> subscribable, Action<TValue, T> update)
         {
-            update(_data, value);
-            _isDirty = true;
+            subscribable.Subscribe(value =>
+            {
+                update(value, _data);
+                _isDirty = true;
+            });
         }
 
         void ILateTickable.LateTick()
